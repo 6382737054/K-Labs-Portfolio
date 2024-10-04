@@ -78,9 +78,9 @@ const Navbar = () => {
           className="text-black md:hidden focus:outline-none"
         >
           {isMobileMenuOpen ? (
-            <span className="text-2xl">&#x2715;</span>
+            <span className="text-2xl">✕</span>
           ) : (
-            <span className="text-2xl">&#9776;</span>
+            <span className="text-2xl">☰</span>
           )}
         </button>
 
