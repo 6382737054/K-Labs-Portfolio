@@ -76,16 +76,16 @@ const AboutUs = () => {
           >
             <h2 className="text-3xl font-bold mb-6">Our Legacy of Innovation</h2>
             <p className="text-lg text-gray-300 mb-8">
-              For over two decades, K Labs has been pushing the boundaries of what's possible in technology. 
+              For alomost two decades, K Labs has been pushing the boundaries of what's possible in technology. 
               Our journey is marked by groundbreaking innovations, strategic partnerships with industry giants, 
               and a relentless pursuit of excellence that has positioned us at the forefront of the digital revolution.
             </p>
             <ul className="space-y-4">
               {[
-                'Artificial Intelligence & Machine Learning',
-                'Quantum Computing Solutions',
-                'Advanced Cybersecurity Systems',
-                'Blockchain Technology Integration'
+                'Software Development',
+                'Artificial Intelligence',
+                'Digital Marketing',
+                'Mobile app Development'
               ].map((item, index) => (
                 <motion.li
                   key={index}

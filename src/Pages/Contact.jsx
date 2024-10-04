@@ -4,10 +4,10 @@ import { motion } from 'framer-motion';
 
 const Contact = () => {
   const contactInfo = [
-    { icon: <FaMapMarkerAlt className="text-red-600" />, text: '123 Tech Street, Silicon Valley, CA 94000' },
-    { icon: <FaPhone className="text-blue-600" />, text: '+1 (555) 123-4567' },
+    { icon: <FaMapMarkerAlt className="text-red-600" />, text: 'No 3, Krishnamma Rd, near TAJ Hotel, Tirumurthy Nagar, Nungambakkam, Chennai, Tamil Nadu 600034' },
+    { icon: <FaPhone className="text-blue-600" />, text: '+91 98941 92380.' },
     { icon: <FaEnvelope className="text-gray-600" />, text: 'contact@klabs.com' },
-    { icon: <FaWhatsapp className="text-green-500" />, text: '+1 (555) 987-6543' },
+    { icon: <FaWhatsapp className="text-green-500" />, text: '+91 98941 92380.' },
   ];
 
   const socialLinks = [
@@ -78,7 +78,7 @@ const Contact = () => {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               className="mt-8 bg-indigo-600 text-white py-3 px-8 rounded-full font-semibold text-lg hover:bg-indigo-700 transition-colors w-full shadow-md"
-              onClick={() => window.open('https://www.klabs.com', '_blank')}
+              onClick={() => window.open('https://www.klabsindia.com/', '_blank')}
             >
               Visit Our Website
             </motion.button>
