@@ -17,7 +17,7 @@ const topClients = [
     id: 2,
     name: "Naan Mudhalvan",
     industry: "Technology",
-    logo: "/images/NaanMudhalvanLogo.png",
+    logo: "/Images/NaanMudhalvanLogo.png",
     image: "/Images/NaanMudhalvan.png",
     description: "The Naan Mudhalvan scheme aims to transform higher education in Tamil Nadu by raising the Gross Enrolment Ratio from 51% to 100% in the next three years. Its core objective is to ensure that all students can pursue meaningful higher education after finishing school. The scheme is driven by a set of essential missions designed to make this ambitious goal achievable",
     featuredProject: "Our main mission is to invest in the quality of education, especially in higher education.",
