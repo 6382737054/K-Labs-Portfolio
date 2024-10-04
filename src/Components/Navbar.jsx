@@ -41,7 +41,7 @@ const Navbar = () => {
     { to: "about", icon: <AiFillInfoCircle className="text-green-500" />, text: "About" },
     { to: "services", icon: <AiFillAppstore className="text-purple-500" />, text: "Services" },
     { to: "clients", icon: <FaUsers className="text-orange-500" />, text: "Clients" },
-    { to: "contact", icon: <FaPhoneAlt className="text-red-500" />, text: "Contact Us" }
+    { to: "contact", icon: <FaPhoneAlt className="text-red-500" />, text: "Contact" }
   ];
 
   const NavLink = ({ item, mobile = false }) => (
@@ -84,7 +84,7 @@ const Navbar = () => {
           )}
         </button>
 
-        <nav className="hidden md:flex space-x-4"> {/* Changed from space-x-8 to space-x-4 */}
+        <nav className="hidden md:flex space-x-4">
           {menuItems.map((item, index) => (
             <NavLink key={index} item={item} />
           ))}
