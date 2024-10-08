@@ -54,8 +54,11 @@ const HeroSection = () => {
           transition={{ duration: 0.8 }}
         >
           <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-teal-300">
-            K Labs: Shaping Tomorrow's Technology
-          </span>
+  K Labs Technology And Solutions
+  <br />
+  Shaping Tomorrow's Technology
+</span>
+
         </motion.h1>
 
         <motion.p 
