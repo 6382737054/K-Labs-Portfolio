@@ -1,83 +1,146 @@
 import React from 'react';
-import { FaMapMarkerAlt, FaPhone, FaEnvelope, FaLinkedin, FaWhatsapp } from 'react-icons/fa';
-import { motion } from 'framer-motion';
+import { MapPin, Phone, Mail, Linkedin, MessageCircle } from 'lucide-react';
+import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
+import 'leaflet/dist/leaflet.css';
+import L from 'leaflet';
+
+// Fix for default marker icons in Leaflet with React
+delete L.Icon.Default.prototype._getIconUrl;
+L.Icon.Default.mergeOptions({
+  iconRetinaUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png',
+  iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png',
+  shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
+});
 
 const Contact = () => {
+  // Chennai coordinates
+  const position = [13.0569, 80.2449];
+
   const contactInfo = [
-    { icon: <FaMapMarkerAlt className="text-red-600" />, text: 'No 3, Krishnamma Rd, near TAJ Hotel, Tirumurthy Nagar, Nungambakkam, Chennai, Tamil Nadu 600034' },
-    { icon: <FaPhone className="text-blue-600" />, text: '+91 98419 23808' },
-    { icon: <FaEnvelope className="text-gray-600" />, text: 'infot@klabsindia.com' },
-    { icon: <FaWhatsapp className="text-green-500" />, text: '+91 98419 23808' },
+    {
+      icon: <MapPin className="w-6 h-6 text-red-500" />,
+      label: "Visit Us",
+      text: "No 3, Krishnamma Rd, near TAJ Hotel, Tirumurthy Nagar, Nungambakkam, Chennai, Tamil Nadu 600034",
+      detail: "Monday - Friday: 9:00 AM - 6:00 PM"
+    },
+    {
+      icon: <Phone className="w-6 h-6 text-blue-500" />,
+      label: "Call Us",
+      text: "+91 98419 23808",
+      detail: "24/7 Customer Support"
+    },
+    {
+      icon: <Mail className="w-6 h-6 text-purple-500" />,
+      label: "Email Us",
+      text: "infot@klabsindia.com",
+      detail: "We'll respond within 24 hours"
+    }
   ];
 
   const socialLinks = [
-    { icon: <FaLinkedin className="text-blue-700" />, url: 'https://www.linkedin.com/company/klabs', name: 'LinkedIn' },
-    { icon: <FaWhatsapp className="text-green-500" />, url: 'https://wa.me/15559876543', name: 'WhatsApp' },
+    {
+      icon: <Linkedin className="w-6 h-6" />,
+      url: 'https://www.linkedin.com/company/klabs',
+      name: 'LinkedIn',
+      bgColor: 'bg-blue-600'
+    },
+    {
+      icon: <MessageCircle className="w-6 h-6" />,
+      url: 'https://wa.me/15559876543',
+      name: 'WhatsApp',
+      bgColor: 'bg-green-500'
+    }
   ];
 
   return (
-    <div className="bg-gradient-to-br from-indigo-600 to-purple-700 min-h-screen flex items-center justify-center p-4 sm:p-8">
-      <motion.div
-        initial={{ opacity: 0, y: 50 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-        className="bg-white rounded-2xl shadow-2xl p-6 sm:p-10 max-w-5xl w-full"
-      >
-        <h2 className="text-3xl sm:text-5xl font-bold mb-6 sm:mb-8 text-center text-indigo-800">Get in Touch</h2>
-        <div className="space-y-8">
-          <div className="text-center">
-            <h3 className="text-2xl sm:text-3xl font-semibold mb-4 sm:mb-6 text-indigo-700">Contact Information</h3>
-            <ul className="space-y-4 sm:space-y-6">
-              {contactInfo.map((item, index) => (
-                <motion.li
-                  key={index}
-                  initial={{ opacity: 0, x: -50 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
-                  className="flex items-start sm:items-center justify-start sm:justify-center space-x-3 sm:space-x-4 text-gray-700"
-                >
-                  <span className="text-xl sm:text-2xl mt-1 sm:mt-0">{item.icon}</span>
-                  <span className="text-sm sm:text-lg text-left">{item.text}</span>
-                </motion.li>
-              ))}
-            </ul>
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 to-blue-900">
+      <div className="container mx-auto px-4 py-16">
+        <div className="max-w-6xl mx-auto">
+          
+          {/* Header Section */}
+          <div className="text-center mb-16">
+            <h1 className="text-5xl font-bold text-white mb-4">Get in Touch</h1>
+            <p className="text-xl text-gray-300">Let's create something extraordinary together</p>
           </div>
 
-          <div className="text-center">
-            <div className="flex flex-col sm:flex-row justify-center items-center space-y-4 sm:space-y-0 sm:space-x-6">
-              {socialLinks.map((link, index) => (
-                <motion.a
-                  key={index}
-                  href={link.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="flex items-center space-x-2 text-lg sm:text-xl transition-colors"
+          {/* Main Content Grid */}
+          <div className="grid lg:grid-cols-2 gap-8">
+            
+            {/* Contact Information */}
+            <div className="bg-white/10 backdrop-blur-lg rounded-3xl p-8 text-white">
+              <h2 className="text-3xl font-semibold mb-8">Contact Information</h2>
+              <div className="space-y-8">
+                {contactInfo.map((item, index) => (
+                  <div key={index} className="flex items-start space-x-4">
+                    <div className="p-3 bg-white/10 rounded-2xl">
+                      {item.icon}
+                    </div>
+                    <div>
+                      <h3 className="text-xl font-semibold mb-1">{item.label}</h3>
+                      <p className="text-gray-300 mb-1">{item.text}</p>
+                      <p className="text-sm text-gray-400">{item.detail}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Social Links */}
+              <div className="mt-12">
+                <h3 className="text-2xl font-semibold mb-6">Connect With Us</h3>
+                <div className="flex space-x-4">
+                  {socialLinks.map((link, index) => (
+                    <a
+                      key={index}
+                      href={link.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={`${link.bgColor} p-3 rounded-full hover:opacity-90 transition-opacity`}
+                    >
+                      {link.icon}
+                    </a>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {/* Map Section */}
+            <div className="bg-white/10 backdrop-blur-lg rounded-3xl p-8">
+              <h2 className="text-3xl font-semibold text-white mb-8">Our Location</h2>
+              <div className="h-96 rounded-2xl overflow-hidden">
+                <MapContainer 
+                  center={position} 
+                  zoom={16} 
+                  style={{ height: "100%", width: "100%" }}
+                  scrollWheelZoom={false}
+                  dragging={false}
                 >
-                  {link.icon}
-                  <span className="text-indigo-600 hover:text-indigo-800">{link.name}</span>
-                </motion.a>
-              ))}
+                  <TileLayer
+                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                    attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                  />
+                  <Marker position={position}>
+                    <Popup>
+                      KLabs India<br/>
+                      No 3, Krishnamma Rd,<br/>
+                      Nungambakkam, Chennai
+                    </Popup>
+                  </Marker>
+                </MapContainer>
+              </div>
             </div>
           </div>
 
-          <div className="text-center">
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="bg-indigo-600 text-white py-2 sm:py-3 px-6 sm:px-8 rounded-full font-semibold text-base sm:text-lg hover:bg-indigo-700 transition-colors shadow-md"
+          {/* CTA Section */}
+          <div className="text-center mt-16">
+            <button 
               onClick={() => window.open('https://www.klabsindia.com/', '_blank')}
+              className="px-8 py-4 bg-blue-500 hover:bg-blue-600 text-white rounded-full font-semibold text-lg transition-colors"
             >
               Visit Our Website
-            </motion.button>
+            </button>
           </div>
         </div>
-
-        <div className="mt-8 sm:mt-12 text-center">
-          <p className="text-lg sm:text-xl text-gray-600">Ready to innovate? Let's create something extraordinary together!</p>
-        </div>
-      </motion.div>
+      </div>
     </div>
   );
 };

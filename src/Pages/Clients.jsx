@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FaSearch } from 'react-icons/fa';
-
 const topClients = [
   {
     id: 1,  
@@ -106,10 +105,12 @@ const topClients = [
 
 ];
 
+
 const TopClients = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [filteredClients, setFilteredClients] = useState(topClients);
   const [selectedClient, setSelectedClient] = useState(null);
+  const [isHovering, setIsHovering] = useState(null);
 
   useEffect(() => {
     const filtered = topClients.filter(client =>
@@ -125,14 +126,19 @@ const TopClients = () => {
     } else {
       document.body.style.overflow = 'unset';
     }
-
     return () => {
       document.body.style.overflow = 'unset';
     };
   }, [selectedClient]);
 
+  const cardVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0 },
+    hover: { y: -10, boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.1)" }
+  };
+
   return (
-    <section className="py-20 bg-gradient-to-br from-gray-900 via-blue-900 to-indigo-900 text-white" id="top-clients">
+    <section className="py-20 min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-indigo-900 text-white">
       <div className="container mx-auto px-4">
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
@@ -140,8 +146,10 @@ const TopClients = () => {
           transition={{ duration: 0.8 }}
           className="text-center mb-16"
         >
-          <h2 className="text-5xl font-bold mb-4 tracking-tight">Our Esteemed Projects</h2>
-          <p className="text-xl text-gray-300 max-w-3xl mx-auto">
+          <h2 className="text-6xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-400">
+            Our Esteemed Projects
+          </h2>
+          <p className="text-2xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
             Partnering with industry titans to drive transformative innovation across sectors
           </p>
         </motion.div>
@@ -150,33 +158,55 @@ const TopClients = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.2 }}
-          className="flex justify-center mb-12"
+          className="flex justify-center mb-16"
         >
-          <div className="relative w-full max-w-md">
-            <FaSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+          <div className="relative w-full max-w-xl">
+            <FaSearch className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 text-xl" />
             <input
               type="text"
-              placeholder="Search our clients..."
-              className="w-full pl-10 pr-4 py-3 bg-gray-800 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 text-white placeholder-gray-500"
+              placeholder="Search projects by name or industry..."
+              className="w-full pl-12 pr-6 py-4 bg-gray-800/50 backdrop-blur-lg rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400 text-white placeholder-gray-400 text-lg shadow-xl"
               onChange={(e) => setSearchTerm(e.target.value)}
             />
           </div>
         </motion.div>
 
-        <div className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 ${selectedClient ? 'blur-sm' : ''}`}>
-          {filteredClients.map((client) => (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 relative">
+          {filteredClients.map((client, index) => (
             <motion.div 
               key={client.id}
-              className="relative rounded-lg overflow-hidden shadow-lg bg-white cursor-pointer transform hover:scale-105 transition-transform duration-300"
+              variants={cardVariants}
+              initial="hidden"
+              animate="visible"
+              whileHover="hover"
+              transition={{ duration: 0.3, delay: index * 0.1 }}
+              className="group relative rounded-xl overflow-hidden bg-white/10 backdrop-blur-md cursor-pointer"
               onClick={() => setSelectedClient(client)}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
+              onMouseEnter={() => setIsHovering(client.id)}
+              onMouseLeave={() => setIsHovering(null)}
             >
-              <img src={client.logo} alt={client.name} className="h-24 mx-auto p-4" />
-              <div className="p-6">
-                <h3 className="text-xl font-semibold mb-2 text-gray-900">{client.name}</h3>
-                <p className="text-gray-600 mb-4">{client.industry}</p>
-                <p className="text-gray-700">{client.featuredProject}</p>
+              <div className="p-6 h-full flex flex-col">
+                <div className="mb-6 transition-transform duration-300 group-hover:scale-105">
+                  <img 
+                    src={client.logo} 
+                    alt={client.name} 
+                    className="h-24 mx-auto object-contain filter drop-shadow-lg" 
+                  />
+                </div>
+                <div className="flex-grow">
+                  <h3 className="text-xl font-bold mb-3 text-white group-hover:text-blue-300 transition-colors duration-300">
+                    {client.name}
+                  </h3>
+                  <p className="text-blue-300 mb-4 font-medium">{client.industry}</p>
+                  <p className="text-gray-300 line-clamp-3">{client.featuredProject}</p>
+                </div>
+                <motion.div 
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: isHovering === client.id ? 1 : 0 }}
+                  className="mt-4 text-blue-400 text-sm font-medium"
+                >
+                  Click to learn more →
+                </motion.div>
               </div>
             </motion.div>
           ))}
@@ -185,37 +215,52 @@ const TopClients = () => {
         <AnimatePresence>
           {selectedClient && (
             <motion.div 
-              className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-75"
+              className="fixed inset-0 flex items-center justify-center z-50 px-4"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
             >
               <motion.div 
-                className="bg-gray-50 rounded-lg shadow-lg w-11/12 md:w-2/3 lg:w-1/2 max-h-90vh overflow-y-auto"
-                initial={{ scale: 0.8, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                exit={{ scale: 0.8, opacity: 0 }}
+                className="absolute inset-0 bg-black/80 backdrop-blur-sm"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                onClick={() => setSelectedClient(null)}
+              />
+              <motion.div 
+                className="bg-gray-900 rounded-2xl shadow-2xl w-11/12 md:w-2/3 lg:w-1/2 max-h-[85vh] overflow-y-auto relative z-10"
+                initial={{ scale: 0.9, opacity: 0, y: 20 }}
+                animate={{ scale: 1, opacity: 1, y: 0 }}
+                exit={{ scale: 0.9, opacity: 0, y: 20 }}
+                transition={{ type: "spring", duration: 0.5 }}
               >
-                <div className="relative p-6">
-                  <button
-                    className="absolute top-4 right-4 text-gray-800 hover:text-gray-600 transition-colors duration-200"
-                    onClick={() => setSelectedClient(null)}
-                  >
-                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
-                    </svg>
-                  </button>
-                  <img src={selectedClient.image} alt={selectedClient.name} className="h-48 mx-auto object-contain mb-4" />
-                  <h3 className="text-2xl font-semibold mt-4 text-gray-900">{selectedClient.name}</h3>
-                  <p className="text-gray-600 mb-4">{selectedClient.industry}</p>
-                  <p className="text-gray-700 mb-6 leading-relaxed">{selectedClient.description}</p>
+                <button
+                  className="absolute top-4 right-4 text-gray-400 hover:text-white p-2 rounded-full bg-gray-800/50 backdrop-blur-sm transition-all duration-200 hover:bg-gray-700/50"
+                  onClick={() => setSelectedClient(null)}
+                >
+                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+                <div className="p-8">
+                  <img 
+                    src={selectedClient.image} 
+                    alt={selectedClient.name} 
+                    className="h-48 mx-auto object-contain mb-6 rounded-lg" 
+                  />
+                  <h3 className="text-3xl font-bold mb-2 text-white">{selectedClient.name}</h3>
+                  <p className="text-blue-400 mb-6 font-medium">{selectedClient.industry}</p>
+                  <p className="text-gray-300 mb-8 leading-relaxed text-lg">{selectedClient.description}</p>
                   <a 
                     href={selectedClient.website} 
                     target="_blank" 
                     rel="noopener noreferrer" 
-                    className="inline-block bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600 transition-colors duration-200"
+                    className="inline-flex items-center px-6 py-3 rounded-xl bg-gradient-to-r from-blue-500 to-purple-500 text-white font-medium hover:from-blue-600 hover:to-purple-600 transition-all duration-200 shadow-lg hover:shadow-xl"
                   >
                     Visit Website
+                    <svg className="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                    </svg>
                   </a>
                 </div>
               </motion.div>
